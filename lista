@@ -1,0 +1,83 @@
+#include "ListaEnlazada.h"
+#include <cstdlib>
+#include <ctime>
+#include <iostream>
+
+ListaEnlazada::ListaEnlazada() : cabeza(nullptr), tamano(0) {
+    std::srand(std::time(0)); // Inicializar semilla para rand()
+}
+
+ListaEnlazada::~ListaEnlazada() {
+    Nodo* actual = cabeza;
+    while (actual != nullptr) {
+        Nodo* siguiente = actual->siguiente;
+        delete actual;
+        actual = siguiente;
+    }
+}
+
+void ListaEnlazada::insertarAlFinal(int dato) {
+    Nodo* nuevoNodo = new Nodo(dato);
+    
+    if (cabeza == nullptr) {
+        cabeza = nuevoNodo;
+    } else {
+        Nodo* actual = cabeza;
+        while (actual->siguiente != nullptr) {
+            actual = actual->siguiente;
+        }
+        actual->siguiente = nuevoNodo;
+    }
+    tamano++;
+}
+
+void ListaEnlazada::generarAleatorios(int cantidad) {
+    for (int i = 0; i < cantidad; ++i) {
+        int num = std::rand() % 999 + 1; // Números entre 1 y 999
+        insertarAlFinal(num);
+    }
+}
+
+void ListaEnlazada::eliminarPorRango(int min, int max) {
+    Nodo* actual = cabeza;
+    Nodo* anterior = nullptr;
+    
+    while (actual != nullptr) {
+        if (actual->dato < min || actual->dato > max) {
+            // Nodo a eliminar
+            Nodo* temp = actual;
+            
+            if (anterior == nullptr) {
+                // Eliminar cabeza
+                cabeza = actual->siguiente;
+            } else {
+                anterior->siguiente = actual->siguiente;
+            }
+            
+            actual = actual->siguiente;
+            delete temp;
+            tamano--;
+        } else {
+            anterior = actual;
+            actual = actual->siguiente;
+        }
+    }
+}
+
+void ListaEnlazada::mostrarLista() const {
+    Nodo* actual = cabeza;
+    std::cout << "Lista (" << tamano << " elementos): ";
+    
+    while (actual != nullptr) {
+        std::cout << actual->dato;
+        if (actual->siguiente != nullptr) {
+            std::cout << " -> ";
+        }
+        actual = actual->siguiente;
+    }
+    std::cout << std::endl;
+}
+
+int ListaEnlazada::obtenerTamano() const {
+    return tamano;
+}
