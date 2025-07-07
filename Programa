@@ -1,0 +1,34 @@
+#include <iostream>
+#include "ListaEnlazada.h"
+
+int main() {
+    ListaEnlazada lista;
+    
+    // Generar 50 números aleatorios
+    lista.generarAleatorios(50);
+    std::cout << "=== Lista inicial ===" << std::endl;
+    lista.mostrarLista();
+    
+    // Leer rango del usuario
+    int min, max;
+    std::cout << "\nIngrese el valor minimo del rango: ";
+    std::cin >> min;
+    std::cout << "Ingrese el valor maximo del rango: ";
+    std::cin >> max;
+    
+    // Validar entrada
+    if (min > max) {
+        std::cout << "Error: El minimo no puede ser mayor que el maximo." << std::endl;
+        return 1;
+    }
+    
+    // Eliminar elementos fuera del rango
+    lista.eliminarPorRango(min, max);
+    
+    // Mostrar resultados
+    std::cout << "\n=== Lista despues de eliminar elementos fuera del rango [" 
+              << min << ", " << max << "] ===" << std::endl;
+    lista.mostrarLista();
+    
+    return 0;
+}
